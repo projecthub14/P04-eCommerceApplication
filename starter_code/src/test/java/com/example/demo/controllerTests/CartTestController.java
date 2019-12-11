@@ -54,23 +54,23 @@ public class CartTestController {
         when(userRepository.findByUsername("user1")).thenReturn(user);
 
         Item item = new Item();
-        item.setId(10L);
+        item.setId(1L);
         item.setName("item1");
         item.setPrice(BigDecimal.ONE);
         item.setDescription("description");
-        when(itemRepository.findById(10L)).thenReturn(Optional.of(item));
+        when(itemRepository.findById(1L)).thenReturn(Optional.of(item));
 
         ModifyCartRequest request = new ModifyCartRequest();
         request.setUsername("user1");
-        request.setItemId(10L);
+        request.setItemId(1L);
         request.setQuantity(5);
 
         ResponseEntity<Cart> response = cartController.addTocart(request);
         assertNotNull(response);
 
         Cart cart = response.getBody();
-        assertEquals(cart.getItems().size(), 2);
-        assertEquals(cart.getTotal(), new BigDecimal(20));
+        assertEquals(cart.getItems().size(), 5);
+        assertEquals(cart.getTotal(), new BigDecimal(5));
     }
 
     @Test
