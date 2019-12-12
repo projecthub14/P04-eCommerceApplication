@@ -48,21 +48,21 @@ public class CartTestController {
     @Test
     public void add_to_cart(){
         User user = new User();
-        user.setId(1L);
+        user.setId(20L);
         user.setUsername("user1");
         user.setCart(new Cart());
         when(userRepository.findByUsername("user1")).thenReturn(user);
 
         Item item = new Item();
-        item.setId(1L);
+        item.setId(20L);
         item.setName("item1");
         item.setPrice(BigDecimal.ONE);
         item.setDescription("description");
-        when(itemRepository.findById(1L)).thenReturn(Optional.of(item));
+        when(itemRepository.findById(20L)).thenReturn(Optional.of(item));
 
         ModifyCartRequest request = new ModifyCartRequest();
         request.setUsername("user1");
-        request.setItemId(1L);
+        request.setItemId(20L);
         request.setQuantity(5);
 
         ResponseEntity<Cart> response = cartController.addTocart(request);
@@ -76,36 +76,40 @@ public class CartTestController {
     @Test
     public void remove_from_cart(){
         Item item = new Item();
-        item.setId(1L);
-        item.setName("test item");
-        item.setPrice(BigDecimal.TEN);
-        item.setDescription("test item desc");
-        when(itemRepository.findById(1L)).thenReturn(Optional.of(item));
+        item.setId(20L);
+        item.setName("item1");
+        item.setPrice(BigDecimal.ONE);
+        item.setDescription("description");
+        when(itemRepository.findById(20L)).thenReturn(Optional.of(item));
 
-        // add two items so that the size is 2
+
+        //add items to list
         List<Item> items = new ArrayList<>();
         items.add(item);
         items.add(item);
+        items.add(item);
+        items.add(item);
+
 
         Cart cart = new Cart();
         cart.setItems(items);
 
         User user = new User();
-        user.setId(1L);
+        user.setId(20L);
         user.setUsername("test");
         user.setCart(cart);
         when(userRepository.findByUsername("test")).thenReturn(user);
 
         ModifyCartRequest request = new ModifyCartRequest();
         request.setUsername("test");
-        request.setItemId(1L);
-        request.setQuantity(1);
+        request.setItemId(20L);
+        request.setQuantity(2);
 
-        // one item should be removed when this method is called.
+        //remove item
         ResponseEntity<Cart> response = cartController.removeFromcart(request);
         assertNotNull(response);
 
         Cart cartFromResponse = response.getBody();
-        assertEquals(cartFromResponse.getItems().size(), 1);
+        assertEquals(cartFromResponse.getItems().size(), 2);
     }
 }

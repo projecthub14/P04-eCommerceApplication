@@ -32,88 +32,97 @@ public class ItemTestController {
     }
 
     @Test
-    public void getItemsByName_returns_not_found(){
-        ResponseEntity<List<Item>> response = itemController.getItemsByName("test");
+    public void getItemsByName_notFound(){
+        ResponseEntity<List<Item>> response = itemController.getItemsByName("item");
         assertEquals(404, response.getStatusCodeValue());
     }
 
     @Test
-    public void getItemsByName_returns_items(){
-        // create items
+    public void getItemsByName_itemsFound(){
+
         Item item1 = new Item();
-        item1.setId(1L);
-        item1.setName("test item1");
-        item1.setPrice(BigDecimal.ZERO);
-        item1.setDescription("item 1 description");
+        item1.setId(20L);
+        item1.setName("item1");
+        item1.setPrice(BigDecimal.ONE);
+        item1.setDescription("description 1");
 
         Item item2 = new Item();
-        item2.setId(1L);
-        item2.setName("test item2");
-        item2.setPrice(BigDecimal.ZERO);
-        item2.setDescription("item 2 description");
+        item2.setId(20L);
+        item2.setName("item2");
+        item2.setPrice(BigDecimal.ONE);
+        item2.setDescription("description 2");
 
-        when(itemRepository.findByName("test")).thenReturn(Arrays.asList(item1, item2));
+        Item item3 = new Item();
+        item3.setId(20L);
+        item3.setName("item3");
+        item3.setPrice(BigDecimal.ONE);
+        item3.setDescription("description 3");
 
-        ResponseEntity<List<Item>> response = itemController.getItemsByName("test");
+        when(itemRepository.findByName("item")).thenReturn(Arrays.asList(item1, item2, item3));
+        ResponseEntity<List<Item>> response = itemController.getItemsByName("item");
 
         assertNotNull(response);
-
         List<Item> items = response.getBody();
-
-        assertEquals(2, items.size());
-        assertEquals(true, item1.getName().contains("item"));
-        assertEquals(true, item2.getName().contains("item"));
+        assertEquals(3, items.size());
+        assertEquals(true, item1.getName().equals("item1"));
+        assertEquals(true, item2.getName().equals("item2"));
+        assertEquals(true, item3.getName().equals("item3"));
     }
 
     @Test
-    public void getItems_returns_items(){
-        // create items
+    public void getItems_itemsFound(){
+
         Item item1 = new Item();
-        item1.setId(1L);
-        item1.setName("test item1");
-        item1.setPrice(BigDecimal.ZERO);
-        item1.setDescription("item 1 description");
+        item1.setId(20L);
+        item1.setName("item1");
+        item1.setPrice(BigDecimal.ONE);
+        item1.setDescription("description 1");
 
         Item item2 = new Item();
-        item2.setId(1L);
-        item2.setName("test item2");
-        item2.setPrice(BigDecimal.ZERO);
-        item2.setDescription("item 2 description");
+        item2.setId(20L);
+        item2.setName("item2");
+        item2.setPrice(BigDecimal.ONE);
+        item2.setDescription("description 2");
 
-        when(itemRepository.findAll()).thenReturn(Arrays.asList(item1, item2));
+        Item item3 = new Item();
+        item3.setId(20L);
+        item3.setName("item3");
+        item3.setPrice(BigDecimal.ONE);
+        item3.setDescription("description 3");
+
+        when(itemRepository.findAll()).thenReturn(Arrays.asList(item1, item2,item3));
 
         ResponseEntity<List<Item>> response = itemController.getItems();
-
         assertNotNull(response);
-
         List<Item> items = response.getBody();
-
-        assertEquals(2, items.size());
+        assertEquals(3, items.size());
     }
 
     @Test
-    public void getItemById_returns_items(){
-        // create items
+    public void getItemById_itemsFound(){
+
         Item item1 = new Item();
-        item1.setId(1L);
-        item1.setName("test item1");
-        item1.setPrice(BigDecimal.ZERO);
-        item1.setDescription("item 1 description");
+        item1.setId(20L);
+        item1.setName("item1");
+        item1.setPrice(BigDecimal.ONE);
+        item1.setDescription("description 1");
 
         Item item2 = new Item();
-        item2.setId(1L);
-        item2.setName("test item2");
-        item2.setPrice(BigDecimal.ZERO);
-        item2.setDescription("item 2 description");
+        item2.setId(20L);
+        item2.setName("item2");
+        item2.setPrice(BigDecimal.ONE);
+        item2.setDescription("description 2");
 
-        when(itemRepository.findById(1L)).thenReturn(Optional.of(item1));
+        Item item3 = new Item();
+        item3.setId(20L);
+        item3.setName("item3");
+        item3.setPrice(BigDecimal.ONE);
+        item3.setDescription("description 3");
 
-        ResponseEntity<Item> response = itemController.getItemById(1L);
-
+        when(itemRepository.findById(20L)).thenReturn(Optional.of(item2));
+        ResponseEntity<Item> response = itemController.getItemById(20L);
         assertNotNull(response);
-
         Item item = response.getBody();
-
-        assertEquals(item.getName(), "test item1");
+        assertEquals(item.getName(), "item2");
     }
 }

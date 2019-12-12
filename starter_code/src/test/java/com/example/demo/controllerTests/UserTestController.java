@@ -37,14 +37,13 @@ public class UserTestController {
     }
 
     @Test
-    public void create_user_happy_path(){
+    public void create_user(){
         when(bCryptPasswordEncoder.encode("testPassword")).thenReturn("hashPassword");
 
         CreateUserRequest request = new CreateUserRequest();
         request.setUsername("test");
         request.setPassword("testPassword");
         request.setConfirmPassword("testPassword");
-
         final ResponseEntity<User> response = userController.createUser(request);
 
         assertNotNull(response);
@@ -58,55 +57,49 @@ public class UserTestController {
     }
 
     @Test
-    public void findByUserName_returns_404_when_not_found(){
-        ResponseEntity<User> response = userController.findByUserName("test");
-
+    public void findByUserName_notFound(){
+        ResponseEntity<User> response = userController.findByUserName("user");
         assertNotNull(response);
         assertEquals(404, response.getStatusCodeValue());
     }
 
     @Test
-    public void findByUserName_returns_a_valid_user(){
-        // create a user so that it can be returned.
+    public void findByUserName_validUser(){
+
         User user = new User();
-        user.setId(1L);
-        user.setUsername("test");
-        user.setPassword("testPassword");
-        when(userRepository.findByUsername("test")).thenReturn(user);
-
-        ResponseEntity<User> response = userController.findByUserName("test");
-
+        user.setId(20L);
+        user.setUsername("user");
+        user.setPassword("user");
+        when(userRepository.findByUsername("user")).thenReturn(user);
+        ResponseEntity<User> response = userController.findByUserName("user");
         assertNotNull(response);
+        User user1 = response.getBody();
+        assertEquals("user", user1.getUsername());
         assertEquals(200, response.getStatusCodeValue());
 
-        User fetchedUser = response.getBody();
-        assertEquals("test", fetchedUser.getUsername());
     }
 
     @Test
-    public void findById_returns_404_when_not_found(){
-        ResponseEntity<User> response = userController.findById(1L);
-
+    public void findById_notFound(){
+        ResponseEntity<User> response = userController.findById(20L);
         assertNotNull(response);
         assertEquals(404, response.getStatusCodeValue());
     }
 
     @Test
-    public void findById_returns_a_valid_user(){
-        // create a user so that it can be returned.
+    public void findById_validUser(){
+
         User user = new User();
-        user.setId(1L);
-        user.setUsername("test");
-        user.setPassword("testPassword");
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-
-        ResponseEntity<User> response = userController.findById(1L);
-
+        user.setId(20L);
+        user.setUsername("user");
+        user.setPassword("user");
+        when(userRepository.findById(20L)).thenReturn(Optional.of(user));
+        ResponseEntity<User> response = userController.findById(20L);
         assertNotNull(response);
+        User user1 = response.getBody();
+        assertEquals("user", user1.getUsername());
         assertEquals(200, response.getStatusCodeValue());
 
-        User fetchedUser = response.getBody();
-        assertEquals("test", fetchedUser.getUsername());
     }
 
 }
